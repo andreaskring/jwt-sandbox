@@ -1,6 +1,7 @@
 # Usage: provide access token as first command line argument, e.g.
 # $ python sandbox.py <token>
 
+from pprint import pprint
 import sys
 import jwt
 
@@ -18,3 +19,4 @@ data = jwt.decode(
     signing.key,
     algorithms=['RS256']
 )
+pprint(data)
