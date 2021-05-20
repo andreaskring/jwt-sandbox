@@ -20,3 +20,19 @@ data = jwt.decode(
     algorithms=['RS256']
 )
 pprint(data)
+
+# Encoding with own key
+
+# Create key pair with
+# ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
+# openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+# (see https://gist.github.com/ygotthilf/baa58da5c3dd1f69fae9)
+
+with open('jwtRS256.key', 'rb') as fp:
+    pri = fp.read()
+
+with open('jwtRS256.key.pub', 'rb') as fp:
+    pub = fp.read()
+
+token = jwt.encode({'some': 'payload'}, pri, algorithm='RS256')
+payload = jwt.decode(token, pub, algorithms='RS256')
