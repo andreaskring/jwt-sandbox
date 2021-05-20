@@ -4,9 +4,10 @@
 from pprint import pprint
 import sys
 import jwt
+import cryptography.hazmat.primitives.serialization
 
 
-JWKS_URI = 'http://localhost:8080/auth/realms/demo/protocol' \
+JWKS_URI = 'http://localhost:8081/auth/realms/mo/protocol' \
            '/openid-connect/certs'
 
 access_token = sys.argv[1]
@@ -36,3 +37,12 @@ with open('jwtRS256.key.pub', 'rb') as fp:
 
 token = jwt.encode({'some': 'payload'}, pri, algorithm='RS256')
 payload = jwt.decode(token, pub, algorithms='RS256')
+
+# Read key from file to object
+
+with open('jwtRS256.key', 'rb') as fp:
+    key = cryptography.hazmat.primitives.serialization.load_pem_private_key(
+        fp.read(),
+        password=None
+    )
+
